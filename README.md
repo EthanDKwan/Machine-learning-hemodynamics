@@ -121,3 +121,36 @@ Identify natural groupings in hemodynamic responses across 137 samples (treatmen
 - **Clinical correlation**: Test cluster-outcome links (e.g., survival).  
 - **Feature importance**: SHAP/logistic regression for key drivers.  
 - **Validation cohort**: Replicate in independent dataset.  
+
+
+---
+## Supervised Analysis
+
+Notes
+Summary:
+First, perform task 1: which is to identify global discriminators. We will do this by taking our cluster labels from the completed unsupervised k-means clustering (k = 3) and fit a supervised classifier model to this. We will then run SHAP analysis on this model to understand which features separate cluster 0, 1, and 2, and help to explain why these distinct phenotypic definitions exist. Then, we will perform task 2: to understand which features explain differential remodeling within clusters. We will feature three separate supervised regression models to each cluster to explain the continuous label of ejection fraction. We will then perform SHAP analysis to explain how features contribute towards the emergent cardiac function and how these mechanisms are distinct within each cluster phenotype.
+
+(COMPLETE)
+Task 1: explains why your clusters exist (phenotype definitions).
+Explain Cluster Membership	
+Question: "Which features define the boundaries between my clusters?"	
+Method: Fit a classifier to predict cluster labels, then SHAP to explain feature importance.
+Output: Features that discriminate Cluster 0 vs. 1 vs. 2.
+Biological Insight: "Why do these phenotypes exist?"
+
+
+Task 2: explains how function (EF) emerges in each phenotype.
+Question: "Within each cluster, how do features influence EF?"
+Method: Fit separate regressors to predict EF within each cluster, then SHAP to explain EF drivers.
+Output: Features that drive EF in Cluster 0, 1, or 2.
+Biological Insight: "How does function (EF) emerge in each phenotype?"
+
+A feature like EDP might be higher in cluster 3 than cluster 1, but PCA and analyzing cluster means do not explain what features drives the cluster assignment, nor their importance and interaction. SHAP analysis supplements this and can show whether it's pushing the model toward cluster 3, and how strongly — even in the presence of other features like contractility or vascular resistance (i.e. global and local importance, nonlinear effects, and feature directionality).
+
+Figures
+
+Task 1:
+Bar plot for all top features
+Beeswarm plot for each cluster showing top 6 features
+Results of ANOVA and tukey test in tabular form (or just written up)
+Summary of significance

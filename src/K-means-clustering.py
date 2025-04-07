@@ -10,9 +10,10 @@ from Helpers.plot_silhouette import plot_silhouette
 from Helpers.plot_tsne_clusters import plot_tsne_clusters
 
 file_path = os.path.join("..", "sample data", "PAH Project Selected Predictors-preprocessed.xlsx")
-data = pd.read_excel(file_path,sheet_name='Processed Averaged W4, W8, W12')
+#data = pd.read_excel(file_path,sheet_name='Averaged W0, W4, W8, W12')
+data = pd.read_excel(file_path, sheet_name = "Processed Averaged W4, W8, W12") #No controls
 data = data.drop(['GroundTruth', 'ID'], axis=1)
-data_array = data.to_numpy()
+#data_array = data.to_numpy()
 #print(data)
 
 
@@ -21,12 +22,12 @@ pca = PCA(n_components=6)  # Reduce to 6 dimensions = ~70% variance
 reduced_data = pca.fit_transform(data)
 
 #K-means clustering
-nclusters = 5 #Based on silhouette score, choosing k = 3 and k = 5
+nclusters = 3 #Based on silhouette score, choosing k = 3 and k = 5
 kmeans = KMeans(n_clusters=nclusters, n_init = 10) 
 kmeans.fit(reduced_data)
 cluster_assignments = kmeans.labels_ #Note: .labels_ is used for accessing labels immediately after training)
 #To reuse the trained model, use kmeans.predict(X)
-
+data['k3_clusters'] = cluster_assignments
 
 ### t-SNE plots for cluster visualization
 plot_tsne_clusters(reduced_data, kmeans.labels_,title='t-SNE: Hemodynamics Clusters (k=5)')
@@ -40,6 +41,10 @@ for i, cluster_indices_list in enumerate(cluster_indices):
     print(cluster_indices_list)
     print()
 print("cluster assignments: ", cluster_assignments)
+
+save_dir = os.path.join("..","Sample Data")
+save_path = os.path.join(save_dir,"Hemodynamics_with_Kclusters.csv")
+data.to_csv(save_path, index = False)
 
 #Plotting cluster assignments in 3D
 fig = plt.figure(figsize=(8, 6))

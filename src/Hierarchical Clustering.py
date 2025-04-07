@@ -28,7 +28,8 @@ READ IN DATA
 
 # Read in the PAH Project Selected Predictors spreadsheet
 file_path = os.path.join("..", "sample data", "PAH Project Selected Predictors-preprocessed.xlsx")
-data = pd.read_excel(file_path)
+#data = pd.read_excel(file_path, sheet_name = "Averaged W0, W4, W8, W12") #With controls
+data = pd.read_excel(file_path, sheet_name = "Processed Averaged W4, W8, W12") #No controls
 # In the variable 'data', each row represents a sample (132 total)
 # and each column represents a feature of heart function (27 total)
 
