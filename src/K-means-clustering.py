@@ -2,6 +2,7 @@ import os
 os.environ["OMP_NUM_THREADS"] = "1"
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
@@ -59,6 +60,54 @@ ax.set_ylabel('Principal Component 2')
 ax.set_zlabel('Principal Component 3')
 ax.legend()
 plt.show()
+
+
+# Plotting basic cluster feature means and stdeviations
+features_to_plot = ['HR','EF','dp/dt max','dp/dt min','PVR','AdjESP','AdjEDP','Ees','Eed','Sex']
+cluster_stats = (
+    data.groupby('k3_clusters')[features_to_plot]
+    .agg(['mean', 'std'])
+    .stack(level=0)  # Reshape for easier plotting
+    .reset_index()
+    .rename(columns={'level_1': 'feature'})
+)
+n_clusters = len(cluster_stats['k3_clusters'].unique())
+n_features = len(features_to_plot)
+bar_width = 0.25
+index = np.arange(n_features)
+colors = ['#1f77b4', '#ff7f0e', '#2ca02c']
+fig, axes = plt.subplots(2,5,figsize=(25,10))
+axes = axes.flatten()
+for idx, (ax, feature) in enumerate(zip(axes, features_to_plot)):
+    stats = data.groupby('k3_clusters')[feature].agg(['mean', 'std']).reset_index()
+    bars = ax.bar(
+        stats['k3_clusters'],
+        stats['mean'],
+        yerr=stats['std'],
+        color=colors,
+        capsize=5,
+        width=0.6)
+    ax.set_title(feature, fontsize=30)
+    ax.set_xlabel('Cluster', fontsize=10)
+    ax.set_ylabel('Value', fontsize=10)
+    ax.set_xticks(stats['k3_clusters'])
+    ax.tick_params(axis='both', labelsize=8)
+    ax.grid(axis='y', linestyle='--', alpha=0.5)
+for idx in range(n_features, len(axes)):
+    fig.delaxes(axes[idx])
+plt.tight_layout(pad=2.0)
+plt.show()
+
+
+"""
+#Plotting parallel coordinates #Didn't like this visualization
+cluster_means = data.groupby('k3_clusters')[['AdjESP', 'EF', 'Ees', 'Treatment Duration']].mean().reset_index()
+plt.figure(figsize=(10, 6))
+parallel_coordinates(cluster_means, 'k3_clusters', colormap='viridis')
+plt.title("Feature Trends Across Clusters")
+plt.xticks(rotation=45)
+plt.show()
+"""
 
 # Silhouette Analyses ####################################
 silhouette_scores = []

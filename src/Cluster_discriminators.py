@@ -13,8 +13,6 @@ import shap
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.stats import f_oneway
-from statsmodels.stats.multicomp import pairwise_tukeyhsd  
 
 # Load pre-clustered data
 file_path = os.path.join("..", "sample data", "Hemodynamics_with_Kclusters.csv")
@@ -47,32 +45,3 @@ for i, cluster_name in enumerate(['Cluster 0', 'Cluster 1', 'Cluster 2']):
               fontsize=12, pad=20)
     plt.tight_layout()
     plt.show()
-    
-#Statistical validation
-# 1. Select top features from SHAP analysis
-top_features = ['dp/dt max', 'dp/dt min', 'AdjESP', 'HR', 'PVR', 'Eed','AdjEDP']
-
-# 2. Run ANOVA for each feature
-results = []
-for feature in top_features:
-    cluster_groups = [data[data['k3_clusters'] == i][feature] for i in [0, 1, 2]]
-    f_stat, p_val = f_oneway(*cluster_groups)
-    results.append({
-        'Feature': feature,
-        'F-statistic': f_stat,
-        'p-value': p_val,
-        'Significant (p < 0.05)': p_val < 0.05
-    })
-
-# 3. Display as a table
-stats_df = pd.DataFrame(results)
-print(stats_df)
-
-for feature in top_features:  
-    print(f"\n--- Tukey HSD for {feature} ---")  
-    tukey = pairwise_tukeyhsd(  
-        endog=data[feature],  
-        groups=data['k3_clusters'],  
-        alpha=0.05  
-    )  
-    print(tukey.summary())  
