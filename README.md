@@ -1,7 +1,10 @@
 # Machine Learning for Hemodynamic Phenotyping 
+*Identifying distinct cardiac remodeling patterns by mining clinical hemodynamic data*
+
+*Used unsupervised learning and SHAP analysis to discover and validate three distinct cardiac remodeling patterns in clinical pulmonary hypertension data, revealing unexpected compensatory mechanisms.*  
 
 ## Problem  
-*"Cardiac Hemodynamic remodeling is complex in health and disease; can we find hidden patterns that our understanding of disease progression?"*  
+*"Cardiac hemodynamic remodeling is complex in health and disease; can we find hidden patterns that our understanding of disease progression?"*  
 
 ## Methods  
 *Fitting unsupervised (hierarchical, k-means clustering) and supervised (Random Forest Regression) ML models to a real-world pulmonary hypertension dataset (101 samples, 27 features), applying computational/numeric tools to validate our results (SHAP analysis, statistical validation) and applying our cardiology domain expertise to interpret the results.*
@@ -89,7 +92,6 @@ Machine-learning-hemodynamics/
 ### License
 
 This project is licensed under the CC by NC 4 License. See the [LICENSE](LICENSE) file for details.
-
 
 --- 
 
