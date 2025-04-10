@@ -10,11 +10,11 @@
 *Fitting unsupervised (hierarchical, k-means clustering) and supervised (Random Forest Regression) ML models to a real-world pulmonary hypertension dataset (101 samples, 27 features), applying computational/numeric tools to validate our results (SHAP analysis, statistical validation) and applying our cardiology domain expertise to interpret the results.*
 
 ### Technologies
-Frontend: N/A
-Languages: Python
-ML: scikit-learn
-Data Handling: Pandas, numpy, openpyxl
-Visualization: Matplotlib, plotly, seaborn
+- Frontend: N/A
+- Languages: Python
+- ML: scikit-learn
+- Data Handling: Pandas, numpy, openpyxl
+- Visualization: Matplotlib, plotly, seaborn
 
 ## Key Findings
 
