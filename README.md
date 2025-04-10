@@ -132,7 +132,7 @@ Identify natural groupings in hemodynamic responses across 101 samples.
 ---
 ## Supervised Analysis
 
-#Motivation
+### Motivation
 A feature like EDP might be higher in cluster 3 than cluster 1, but PCA and analyzing cluster means do not explain what features drives the cluster assignment, nor their importance and interaction. SHAP analysis supplements this and can show whether it's pushing the model toward cluster 3, and how strongly — even in the presence of other features like contractility or vascular resistance (i.e. global and local importance, nonlinear effects, and feature directionality).
 
 ### Objective  
@@ -144,19 +144,35 @@ Investigate the hemodynamic features defining the boundaries between cluster phe
 - Statistical validation
 
 ### Key Results
+**SHAP Global Feature Importance**
+- Primary discriminators:
+  1. dp/dt max (contractility)
+  2. dp/dt min (diastolic function) 
+  3. Systolic pressure
+  4. Heart rate (inotropic adaptation)
+  5. PVR
+- Collectively, these results indicate that pressure overload severity was the primary determinant of cluster assignment.
 
-Figures
+**Cluster-Specific Drivers**
 
-- SHAP global feature importance.png: revealed that dp/dt max (contractility) and dp/dt min (relaxation/diastolic function) were the two most important features for discriminating the three clusters. The third most important feature was the systolic pressure and the fifth most important metric was PVR. Altogether, these show that the severity of the pressure overload experienced by each sample was the most important determinant. The heart rate was unexpectedly the 4th most important feature, particularly for C0 and C1, potentially revealing an important inotropic adaptation independent of mechanical changes.
+| Cluster | Top Features                     | Phenotype Interpretation          |
+|---------|----------------------------------|-----------------------------------|
+| C0      | • Low systolic pressure          | Baseline adapted state            |
+|         | • Low EDP/Eed                    | Minimal mechanical remodeling     |
+|---------|----------------------------------|-----------------------------------|
+| C1      | • High afterload (PVR, pressure) | Pressure-overloaded compensation  |
+|         | • Diastolic dysfunction          | with inotropic adaptation        |
+|---------|----------------------------------|-----------------------------------|
+| C2      | • Reduced contractility          | Combined systolic/diastolic       |
+|         | • High diastolic stiffness       | dysfunction                      |
 
-- SHAP Beeswarm - C0.png: shows that key features discriminating C0 were low systolic pressure and pressure rate change (dp/dt max min). SHAP analysis also revealed low diastolic pressure (EDP) and the lowest diastolic stiffness (Eed) were significant discriminators of C0, supporting our hypothesis that C0 is reflective of samples with a baseline adaptation and the fewest mechanical alterations.
+**Key Findings**
+• C0: Preserved mechanics in low-pressure state
+• C1: Afterload-driven with compensatory changes
+• C2: Advanced ventricular stiffness and impairment
+• Heart rate emerged as unexpected important factor (C0/C1)
 
-- SHAP Beeswarm - C1.png: key features discriminating C1 were the elevated afterload (systolic pressure and PVR). Diastolic dysfunction (dp/dt min) was a prominent driver of C1 inclusion. These indicate that C1 is reflective of a high pressure overload cluster and consistent with our phenotype of C1 as a group which responded to high pressure overload with inotropic alterations (HR, contractility).
-
-- SHAP Beeswarm - C2.png: SHAP analysis reveals both systolic (contractility) and diastolic (relaxation) changes played a larger role in C2, with diastolic stiffness (Eed) being a moderate positive driver (SHAP ~0.10) for C2 inclusion, and diastolic pressure being a positive driver.
-
-**Statistical Validation: (KCluster Domain Phenotyping.xlxs)
-
+**Statistical Validation:
 1-factor ANOVA showed significant effects of cluster on key features, including dp/dt max, dp/dt min, ESP, HR, PVR, Eed and Ees. Post-hoc analysis (Tukey HSD) indicated significant differences in all pair-wise cluster comparisons for dp/dt max, dp/dt min, and ESP (p<0.05). C1 showed a significantly increased HR compared to both C0 and C2 (p<0.05), as well as PVR, with C1 increased compared to both C0 and C2 (p<0.05). Both C2 and C1 showed significantly increased diastolic stiffness (Eed, p<0.05) compared to C0.
 
 ** Biological Relevance**
@@ -165,11 +181,12 @@ A balanced contractility and diastolic stiffness response in C2 imply an eccentr
 
 --- 
 ## Conclusions
-Why this matters
+### Why this matters
+
 Identified 3 clinically distinct phenotypes with:
 - Mechanical adaptation linked to evolving hemodynamic profiles with divergent adaptive strategies, not just severity stages
 
-- Tailored treatment implications
+- Tailored treatment implications:
 	- C1 may benefit more from afterload reduction through traditional PAH vasodilator drugs.
 	- C2 may require cardiac volume management (anti-congestives, diuretics).
 	- Both C0 and C2 could benefit from traditional cardiac inotropic drugs.
@@ -183,14 +200,15 @@ Identified 3 clinically distinct phenotypes with:
 - K-means-clustering.py: K-means clustering + Visualization
 - Cluster-discriminators.py: Supervised classifier model + SHAP analysis
 - Statistical-Validation.py: ANOVA + posthoc validation
-	-/Helpers/
-		-plot_silhouette.py: for generating silhouette plots
-		-plot_tsne_clusters.py: for generating tSNE plots
+
+-/Helpers/
+	-plot_silhouette.py: for generating silhouette plots
+	-plot_tsne_clusters.py: for generating tSNE plots
 
 /Sample Data/
-- Hemodynamics_with_Kclusters.csv: Clustered data
-- PAH Project Selected Predictors - preprocessed.xlsx: Raw features
-- Parameter Legend: Relevant physiology, cardiac and mechanical terms
+	- Hemodynamics_with_Kclusters.csv: Clustered data
+	- PAH Project Selected Predictors - preprocessed.xlsx: Raw features
+	- Parameter Legend: Relevant physiology, cardiac and mechanical terms
 
 /Results/
 
@@ -247,7 +265,7 @@ Code: /src/ includes unsupervised, supervised, statistical analysis .py scripts
 
 Figures: /Results/ includes data visualization and results figures
 
-###License
+### License
 
 This project is licensed under the CC by NC 4 License. See the [LICENSE](LICENSE) file for details.
 
