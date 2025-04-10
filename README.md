@@ -27,16 +27,16 @@
 | **C0**      | • Low systolic pressure          | *Baseline adapted state*            |
 |         | • Low EDP/Eed                    | Minimal mechanical remodeling     |
 |---------|----------------------------------|-----------------------------------|
-|** C1**      | • High afterload (PVR, pressure) | Pressure-overloaded compensation  |
+|**C1**      | • High afterload (PVR, pressure) | Pressure-overloaded compensation  |
 |         | • Diastolic dysfunction          | with high *mechanical remodeling*        |
 |---------|----------------------------------|-----------------------------------|
-| **C2**      | • Reduced contractility          | systolic/diastolic remodeling       |
+| **C2**      | • Reduced contractility          | Systolic/diastolic remodeling       |
 |         | • High diastolic stiffness       | but with *adapted functional reserve*                      |
 
-### Impact
+## Impact
 *"Identified 3 remodeling phenotypes in our pulmonary hypertension dataset with distinct treatment implications."*
 
-## Clinical Implications
+### Clinical Implications
 | Phenotype          | Potential Clinical Correlate       | Therapeutic Considerations        |
 |--------------------|-----------------------------------|-----------------------------------|
 | Baseline Adaptation       | Early compensated state           | Monitor for decompensation        |
@@ -59,14 +59,23 @@ Identified 3 clinically distinct phenotypes with:
 
 ## Repository Structure
 Machine-learning-hemodynamics/
+
 ├── results/ # Analysis outputs
+
 ├── src/ # Python
+
 │ ├── hierarchical-clustering.py
+
 │ ├── k-means-clustering.py
+
 │ ├── cluster-discriminators.py
+
 │ ├── statistical-validation.py
+
 ├── sample data/
+
 │ ├── Parameter Legend.xlsx
+
 └── README.md # Project overview
 
 ### How to use this Repository
@@ -81,6 +90,8 @@ Machine-learning-hemodynamics/
 
 This project is licensed under the CC by NC 4 License. See the [LICENSE](LICENSE) file for details.
 
+
+--- 
 
 --- 
 # Detailed Appendix
@@ -267,20 +278,6 @@ Investigate the hemodynamic features defining the boundaries between cluster phe
 
 A balanced contractility and diastolic stiffness response in C2 imply an eccentric mechanical adaptation, in contrast to C1, which responded to the large pressure overload with greater diastolic dysfunction and recruited HR elevation to compensate.
 
---- 
-## Conclusions
-### Why this matters
-
-Identified 3 clinically distinct phenotypes with:
-- Mechanical adaptation linked to evolving hemodynamic profiles with divergent adaptive strategies, not just severity stages
-
-- Tailored treatment implications:
-	- C1 may benefit more from afterload reduction through traditional PAH vasodilator drugs.
-	- C2 may require cardiac volume management (anti-congestives, diuretics).
-	- Both C0 and C2 could benefit from traditional cardiac inotropic drugs.
-
----
-
 ### Key files
 /src/
 
@@ -343,19 +340,6 @@ Identified 3 clinically distinct phenotypes with:
 - SHAP Beeswarm C1.png
 
 - SHAP Beeswarm C2.png
-
-
-### How to use this Repository
-1. Install requirements:  
-   `pip install -r requirements.txt`
-2. Run notebooks in order
-3. See `results/` for final outputs
-
-> **Note**: Clinical interpretations require domain expertise - consult cardiology literature for phenotype correlations.
-
-### License
-
-This project is licensed under the CC by NC 4 License. See the [LICENSE](LICENSE) file for details.
 
 
 Task 2: explains how function (EF) emerges in each phenotype.
