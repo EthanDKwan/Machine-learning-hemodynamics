@@ -24,7 +24,7 @@ reduced_data = pca.fit_transform(data)
 
 #K-means clustering
 nclusters = 3 #Based on silhouette score, choosing k = 3 and k = 5
-kmeans = KMeans(n_clusters=nclusters, n_init = 10) 
+kmeans = KMeans(n_clusters=nclusters, n_init = 10, random_state = 42) 
 kmeans.fit(reduced_data)
 cluster_assignments = kmeans.labels_ #Note: .labels_ is used for accessing labels immediately after training)
 #To reuse the trained model, use kmeans.predict(X)

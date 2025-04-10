@@ -1,16 +1,89 @@
-# Machine Learning Hemodynamics  
-**Repository for supervised and unsupervised ML PhD project analyzing cardiac hemodynamics**  
+# Machine Learning for Hemodynamic Phenotyping 
 
-### Problem  
-*"Hemodynamics are complex; can we find hidden patterns?"*  
+## Problem  
+*"Cardiac Hemodynamic remodeling is complex in health and disease; can we find hidden patterns that our understanding of disease progression?"*  
 
-### Solution  
-*Fitting unsupervised (hierarchical, k-means clustering) and supervised (Random Forest Regression) machine learning models to a real-world pulmonary hypertension dataset (101 samples, 27 features), applying computational/numeric tools to validate our results (SHAP analysis, statistical validation) and applying our cardiac remodeling domain expertise to analyze and interpret the results.*
+## Methods  
+*Fitting unsupervised (hierarchical, k-means clustering) and supervised (Random Forest Regression) ML models to a real-world pulmonary hypertension dataset (101 samples, 27 features), applying computational/numeric tools to validate our results (SHAP analysis, statistical validation) and applying our cardiology domain expertise to interpret the results.*
 
-### Impact  
+## Key Findings
+
+### Unsupervised Clustering (k=3)
+- Identified three distinct hemodynamic phenotypes:
+  - **Cluster 0**: Baseline Adapted state, low severity (↓ PVR, ↓ ESP, ↓ EDP)
+  - **Cluster 1**: High Mechanical Remodeling (↑ PVR, ↑ ESP, ↑ Heart Rate  ) 
+  - **Cluster 2**: Adapted Functional Reserve (↑ EF, ↑ contractility, ↑ stiffness)
+
+### Supervised Learning + Validation
+- **SHAP analysis Validation**:
+  - Pressure metrics (dp/dt max/min, systolic pressure) were primary discriminators
+  - Heart rate unexpectedly important (potential compensatory mechanism)
+- **Statistical validation** (ANOVA + Tukey HSD):
+  - All top features differed significantly between clusters (p < 0.05)
+
+**Cluster-Profiles**
+| Cluster | Top Features                     | Phenotype Interpretation          |
+|---------|----------------------------------|-----------------------------------|
+| **C0**      | • Low systolic pressure          | *Baseline adapted state*            |
+|         | • Low EDP/Eed                    | Minimal mechanical remodeling     |
+|---------|----------------------------------|-----------------------------------|
+|** C1**      | • High afterload (PVR, pressure) | Pressure-overloaded compensation  |
+|         | • Diastolic dysfunction          | with high *mechanical remodeling*        |
+|---------|----------------------------------|-----------------------------------|
+| **C2**      | • Reduced contractility          | systolic/diastolic remodeling       |
+|         | • High diastolic stiffness       | but with *adapted functional reserve*                      |
+
+### Impact
 *"Identified 3 remodeling phenotypes in our pulmonary hypertension dataset with distinct treatment implications."*
 
+## Clinical Implications
+| Phenotype          | Potential Clinical Correlate       | Therapeutic Considerations        |
+|--------------------|-----------------------------------|-----------------------------------|
+| Baseline Adaptation       | Early compensated state           | Monitor for decompensation        |
+| Mechanical Remodeling| Hypertension, Hypertrophic cardiomyopathy            | Vasodilators, diuretics          |
+| Adapted Functional Reserve + Stiffness    | Heart Failure with preserved Ejection Fraction (HFpEF)   | Inotropic rate controls, stiffness modulators|
+
+--- 
+## Conclusions
+### Why this matters
+
+Identified 3 clinically distinct phenotypes with:
+- Mechanical adaptation linked to evolving hemodynamic profiles with divergent adaptive strategies, not just severity stages
+
+- Tailored treatment implications:
+	- C1 may benefit more from afterload reduction through traditional PAH vasodilator drugs.
+	- C2 may require cardiac volume management (anti-congestives, diuretics).
+	- Both C0 and C2 could benefit from traditional cardiac inotropic drugs.
+
 ---
+
+## Repository Structure
+Machine-learning-hemodynamics/
+├── results/ # Analysis outputs
+├── src/ # Python
+│ ├── hierarchical-clustering.py
+│ ├── k-means-clustering.py
+│ ├── cluster-discriminators.py
+│ ├── statistical-validation.py
+├── sample data/
+│ ├── Parameter Legend.xlsx
+└── README.md # Project overview
+
+### How to use this Repository
+1. Install requirements:  
+   `pip install -r requirements.txt`
+2. Run notebooks in order
+3. See `results/` for final outputs
+
+> **Note**: Clinical interpretations require domain expertise - consult cardiology literature for phenotype correlations.
+
+### License
+
+This project is licensed under the CC by NC 4 License. See the [LICENSE](LICENSE) file for details.
+
+
+--- 
+# Detailed Appendix
 
 ## 1. Hierarchical Clustering 
 **Exploring Hemodynamic Groupings via Unsupervised Hierarchical Clustering Analysis**  
@@ -81,10 +154,20 @@ Identify natural groupings in hemodynamic responses across 101 samples.
 
 ### Key Results  
 #### A. Three-Cluster Solution (`k=3`)  
-**Cluster Profiles:**  
-- **C0**: (*"Baseline Adaptation"*)Low Pressure, few mechanical alterations (*"Least Severe"*).  
-- **C1**: (*"Mechanical remodeling"*)High pressure, Most remodeling (increased ESP, Ees, dp/dt).  
-- **C2**: (*"Functional Reserve"*)Medium Pressure, High EF, intermediate mechanical remodeling (*"Preserved mechanics"*).  
+
+**Cluster-Profiles**
+
+| Cluster | Top Features                     | Phenotype Interpretation          |
+|---------|----------------------------------|-----------------------------------|
+| **C0**      | • Low systolic pressure          | *Baseline adapted state*            |
+|         | • Low EDP/Eed                    | Minimal mechanical remodeling     |
+|---------|----------------------------------|-----------------------------------|
+|** C1**      | • High afterload (PVR, pressure) | Pressure-overloaded compensation  |
+|         | • Diastolic dysfunction          | with *mechanical remodeling*        |
+|---------|----------------------------------|-----------------------------------|
+| **C2**      | • Reduced contractility          | systolic/diastolic remodeling       |
+|         | • High diastolic stiffness       | but with *adapted functional reserve*                      |
+
 
 **Biological Relevance:**  
 - Clustering indicates degree of mechanical adaptation aligns with hemodynamic profiles. C0 shows minimal changes; C1 suggests robust mechanical adaptation.
@@ -167,15 +250,20 @@ Investigate the hemodynamic features defining the boundaries between cluster phe
 |         | • High diastolic stiffness       | dysfunction                      |
 
 **Key Findings**
+
 • C0: Preserved mechanics in low-pressure state
+
 • C1: Afterload-driven with compensatory changes
+
 • C2: Advanced ventricular stiffness and impairment
+
 • Heart rate emerged as unexpected important factor (C0/C1)
 
-**Statistical Validation:
+**Statistical Validation**
+
 1-factor ANOVA showed significant effects of cluster on key features, including dp/dt max, dp/dt min, ESP, HR, PVR, Eed and Ees. Post-hoc analysis (Tukey HSD) indicated significant differences in all pair-wise cluster comparisons for dp/dt max, dp/dt min, and ESP (p<0.05). C1 showed a significantly increased HR compared to both C0 and C2 (p<0.05), as well as PVR, with C1 increased compared to both C0 and C2 (p<0.05). Both C2 and C1 showed significantly increased diastolic stiffness (Eed, p<0.05) compared to C0.
 
-** Biological Relevance**
+**Biological Relevance**
 
 A balanced contractility and diastolic stiffness response in C2 imply an eccentric mechanical adaptation, in contrast to C1, which responded to the large pressure overload with greater diastolic dysfunction and recruited HR elevation to compensate.
 
@@ -214,56 +302,56 @@ Identified 3 clinically distinct phenotypes with:
 
 -/Hierarchical clustering/
 
-	- Hierarchical clustering dendrogram.png: clustering Dendrogram for samples with a distance threshold of 20
+- Hierarchical clustering dendrogram.png: clustering Dendrogram for samples with a distance threshold of 20
 
-	- Hierarchical clustering elbow heuristic.png: Elbow analysis vs number of clusters
+- Hierarchical clustering elbow heuristic.png: Elbow analysis vs number of clusters
 
-	- Silhouette analysis for hierarchical clustering.png: Total silhouette score vs number of clusters
+- Silhouette analysis for hierarchical clustering.png: Total silhouette score vs number of clusters
 
-	- tSNE visualization of Hierarchical clusters.png: tDistributed Stochastic Neighbor Embedding shows quality of hierarchical clustering
+- tSNE visualization of Hierarchical clusters.png: tDistributed Stochastic Neighbor Embedding shows quality of hierarchical clustering
 
-	- tSNE visualization of DBScan clusters.png: tDistributed Stochastic Neighbor Embedding shows quality of DBScan clustering (could not identify any clusters)
+- tSNE visualization of DBScan clusters.png: tDistributed Stochastic Neighbor Embedding shows quality of DBScan clustering (could not identify any clusters)
 
 -/K Clustering/
 
-	- Silhouette Analysis for k clustering.png: Total silhouette score vs number of clusters
+- Silhouette Analysis for k clustering.png: Total silhouette score vs number of clusters
 
-	- silhouette_k3.png: Silhouette plot for each k3 cluster
+- silhouette_k3.png: Silhouette plot for each k3 cluster
 
-	- silhouette_k5.png: Silhouette plot for each k5 cluster
+- silhouette_k5.png: Silhouette plot for each k5 cluster
 
-	-tSNE visualization of k3 clusters.png
+- tSNE visualization of k3 clusters.png
 
-	-tSNE visualization of k5 clusters.png
+- tSNE visualization of k5 clusters.png
 
-	-KCluster Domain Phenotyping.xlsx: Counts of clustering phenotypes across key features (treatment duration, relative vs raw), as well as bar graphs showing means, stds, and significant differences between key features for k3 clustering results. Followup interpretation gided by domain expertise.
+- KCluster Domain Phenotyping.xlsx: Counts of clustering phenotypes across key features (treatment duration, relative vs raw), as well as bar graphs showing means, stds, and significant differences between key features for k3 clustering results. Followup interpretation gided by domain expertise.
 
 -/Principal Component Analysis
 
-	- BiPlots for PC12.png: Visualization of sample distribution across PC1 and 2.
+- BiPlots for PC12.png: Visualization of sample distribution across PC1 and 2.
 
-	- PCA eigenvalue cumsum.png: Relative % of cumulative variance explained by additional principal components.
+- PCA eigenvalue cumsum.png: Relative % of cumulative variance explained by additional principal components.
 
 -/Supervised Analysis/
 
-	-/Cluster Discriminators/
+-/Cluster Discriminators/
 
-		-SHAP global feature importance.png
+- SHAP global feature importance.png
 
-		-SHAP Beeswarm C0.png
+- SHAP Beeswarm C0.png
 
-		-SHAP Beeswarm C1.png
+- SHAP Beeswarm C1.png
 
-		-SHAP Beeswarm C2.png
+- SHAP Beeswarm C2.png
 
 
 ### How to use this Repository
-Clone the repository:
-Install requirements: pip install -r requirements.txt
+1. Install requirements:  
+   `pip install -r requirements.txt`
+2. Run notebooks in order
+3. See `results/` for final outputs
 
-Code: /src/ includes unsupervised, supervised, statistical analysis .py scripts
-
-Figures: /Results/ includes data visualization and results figures
+> **Note**: Clinical interpretations require domain expertise - consult cardiology literature for phenotype correlations.
 
 ### License
 
