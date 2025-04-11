@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
+from joblib import dump
 #Helpers
 from Helpers.plot_silhouette import plot_silhouette
 from Helpers.plot_tsne_clusters import plot_tsne_clusters
@@ -29,6 +30,9 @@ kmeans.fit(reduced_data)
 cluster_assignments = kmeans.labels_ #Note: .labels_ is used for accessing labels immediately after training)
 #To reuse the trained model, use kmeans.predict(X)
 data['k3_clusters'] = cluster_assignments
+# Save the model to a file
+dump(kmeans, 'trained_k3_model.joblib')
+
 
 ### t-SNE plots for cluster visualization
 plot_tsne_clusters(reduced_data, kmeans.labels_,title='t-SNE: Hemodynamics Clusters (k=5)')
