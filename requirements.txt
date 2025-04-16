@@ -6,6 +6,14 @@ matplotlib>=3.4.0
 
 # Machine Learning
 scikit-learn>=1.0.0
+joblib>=1.1.0                 # For model persistence
+
+#Visualization
+plotly>=5.0.0                 # For interactive plots
+streamlit>=1.22.0             # Streamlit Cloud deployment
+streamlit-aggrid>=0.3.0       # For interactive tables
+streamlit-shap>=1.0.3         # For better SHAP integration
+
 
 # Interpretability
 shap>=0.40.0

@@ -12,7 +12,6 @@ import streamlit as st
 if st.sidebar.button("◀️ Back to Dashboard"):
     st.switch_page("app.py")
 
-st.title("Machine Learning for Hemodynamic Phenotyping")
 st.markdown("""
 # Machine Learning for Hemodynamic Phenotyping 
 *Identifying sex-associated cardiac remodeling patterns by mining clinical hemodynamic data*
@@ -83,4 +82,10 @@ Identified three **sex-associated adaptive phenotypes**:
 3. **Validation of Prior Work**:  
    - Confirms clinical findings published in [https://doi.org/10.1152/ajpheart.00098.2024] with computational rigor.
 
+### License
+
+This project is licensed under the CC by NC 4 License.
+
+###Contact
+EthanDKwan@gmail.com
 """)
