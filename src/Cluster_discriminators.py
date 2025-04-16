@@ -13,6 +13,7 @@ import shap
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from joblib import dump
 
 # Load pre-clustered data
 file_path = os.path.join("..", "sample data", "Hemodynamics_with_Kclusters.csv")
@@ -27,6 +28,9 @@ model.fit(X, y)
 
 # 2. Calculate SHAP values for ALL classes
 explainer = shap.TreeExplainer(model)
+#Save Explainer for future use
+dump(explainer, 'SHAP_explainer.joblib')
+
 shap_values = explainer.shap_values(X)  # Returns list of arrays [shap_cluster0, shap_cluster1, shap_cluster2]
 shap_values_corrected = np.transpose(shap_values, (2, 0, 1))
 

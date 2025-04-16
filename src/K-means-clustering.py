@@ -6,31 +6,37 @@ import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
+from sklearn.preprocessing import StandardScaler
 from joblib import dump
 #Helpers
 from Helpers.plot_silhouette import plot_silhouette
 from Helpers.plot_tsne_clusters import plot_tsne_clusters
 
 file_path = os.path.join("..", "sample data", "PAH Project Selected Predictors-preprocessed.xlsx")
-#data = pd.read_excel(file_path,sheet_name='Averaged W0, W4, W8, W12')
-data = pd.read_excel(file_path, sheet_name = "Processed Averaged W4, W8, W12") #No controls
+#data = pd.read_excel(file_path,sheet_name='Averaged W0, W4, W8, W12') #Controls for more structure?
+data = pd.read_excel(file_path,sheet_name='Formatted 0-15') #Controls for more structure?
+#data = pd.read_excel(file_path, sheet_name = "Processed Averaged W4, W8, W12") #No controls
 data = data.drop(['GroundTruth', 'ID'], axis=1)
 #data_array = data.to_numpy()
 #print(data)
 
 
+scaler = StandardScaler()
+data_standardized = scaler.fit_transform(data)
 #PCA
 pca = PCA(n_components=6)  # Reduce to 6 dimensions = ~70% variance
-reduced_data = pca.fit_transform(data)
+reduced_data = pca.fit_transform(data_standardized)
 
 #K-means clustering
 nclusters = 3 #Based on silhouette score, choosing k = 3 and k = 5
-kmeans = KMeans(n_clusters=nclusters, n_init = 10, random_state = 42) 
+kmeans = KMeans(n_clusters=nclusters, n_init = 10, random_state = 43) 
 kmeans.fit(reduced_data)
 cluster_assignments = kmeans.labels_ #Note: .labels_ is used for accessing labels immediately after training)
 #To reuse the trained model, use kmeans.predict(X)
 data['k3_clusters'] = cluster_assignments
 # Save the model to a file
+dump(scaler,'scaler.joblib')
+dump(pca,'pca_model.joblib')
 dump(kmeans, 'trained_k3_model.joblib')
 
 
@@ -51,6 +57,17 @@ save_dir = os.path.join("..","Sample Data")
 save_path = os.path.join(save_dir,"Hemodynamics_with_Kclusters.csv")
 data.to_csv(save_path, index = False)
 
+#Saving cluster means for all features
+X_train = data.drop("k3_clusters", axis = 1)
+Y_train = data["k3_clusters"]
+#Calculate means
+true_means = X_train.groupby(Y_train).mean() #should be shape of (3,25)
+save_dir = os.path.join("..","Results", "K Clustering")
+save_path = os.path.join(save_dir,"cluster means.csv")
+true_means.to_csv(save_path, index = False)
+
+
+
 #Plotting cluster assignments in 3D
 fig = plt.figure(figsize=(8, 6))
 ax = fig.add_subplot(111, projection='3d')
@@ -64,6 +81,8 @@ ax.set_ylabel('Principal Component 2')
 ax.set_zlabel('Principal Component 3')
 ax.legend()
 plt.show()
+
+
 
 
 # Plotting basic cluster feature means and stdeviations
@@ -103,15 +122,7 @@ plt.tight_layout(pad=2.0)
 plt.show()
 
 
-"""
-#Plotting parallel coordinates #Didn't like this visualization
-cluster_means = data.groupby('k3_clusters')[['AdjESP', 'EF', 'Ees', 'Treatment Duration']].mean().reset_index()
-plt.figure(figsize=(10, 6))
-parallel_coordinates(cluster_means, 'k3_clusters', colormap='viridis')
-plt.title("Feature Trends Across Clusters")
-plt.xticks(rotation=45)
-plt.show()
-"""
+
 
 # Silhouette Analyses ####################################
 silhouette_scores = []

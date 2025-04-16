@@ -29,7 +29,7 @@ READ IN DATA
 # Read in the PAH Project Selected Predictors spreadsheet
 file_path = os.path.join("..", "sample data", "PAH Project Selected Predictors-preprocessed.xlsx")
 #data = pd.read_excel(file_path, sheet_name = "Averaged W0, W4, W8, W12") #With controls
-data = pd.read_excel(file_path, sheet_name = "Processed Averaged W4, W8, W12") #No controls
+data = pd.read_excel(file_path, sheet_name = "Formatted 0-15")
 # In the variable 'data', each row represents a sample (132 total)
 # and each column represents a feature of heart function (27 total)
 
@@ -120,7 +120,7 @@ Z = hierarchy.linkage(df_standardized, method=linkage_method)
 distance_threshold = 20  # Adjust this value as needed
 clusters = hierarchy.fcluster(Z, t=distance_threshold, criterion='distance')
 from scipy.cluster.hierarchy import fcluster
-clusters2 = fcluster(Z, t=2, criterion='maxclust')
+clusters3 = fcluster(Z, t=3, criterion='maxclust')
 clusters6 = fcluster(Z, t =6, criterion = 'maxclust')
 
 
@@ -144,7 +144,7 @@ data_tsne = tsne.fit_transform(data_standardized)
 
 plt.figure(figsize = (12,6))
 plt.scatter(data_tsne[:, 0], data_tsne[:, 1], c=clustersDBSCAN, alpha=0.5)  # Color by K=6 clusters
-plt.title('tDistributed Stochastic Neighbor Embedding visualization of DBScan clusters')
+plt.title('tDistributed Stochastic Neighbor Embedding visualization of density-based clusters')
 plt.show()
 
 

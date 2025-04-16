@@ -14,7 +14,7 @@ file_path = os.path.join("..", "sample data", "Hemodynamics_with_Kclusters.csv")
 data = pd.read_csv(file_path)
 
 # Select top features from SHAP analysis
-top_features = ['dp/dt max', 'dp/dt min', 'AdjESP', 'HR', 'PVR', 'Eed','AdjEDP', 'EF', 'Ees']
+top_features = ['dp/dt max', 'dp/dt min', 'AdjESP', 'HR', 'PVR', 'Eed','AdjEDP', 'EF', 'Ees', 'Sex']
 
 # Run ANOVA omnibus for each feature
 results = []

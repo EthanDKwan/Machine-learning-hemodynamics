@@ -14,7 +14,7 @@ Generates synthetic data over physiologic feature ranges
 feature_ranges = {
     "GroundTruth": "binary", #Baseline/PAH
     "ID": (1,10),   #random ID generator
-    "TreatmentDuration": (4,12),
+    "Treatment Duration": (4,12),
     "HR": (240,360),
     "SV": (30,200),
     "EDV": (80,360),
@@ -30,17 +30,15 @@ feature_ranges = {
     "Ees": (0.3, 1.8),      #systolic elastance [mmHg/mL]
     "Eed": (0.001, 0.8),    #diastolic elastance [mmHg/mL]
     "Ea": (0.05, 1.2),
-    "VVC": (0.3, 5),
     "Sex": "binary",
     "Age": (15, 22),
-    "RV Thickness": (.9, 2.2),
-    "RV Mass": (0.2, 0.9),
+    "RV Thickness": (.9, 2.2),  #[mm]
+    "RV Mass": (0.2, 0.9),      #[g]
     "Fulton Index": (0.3, 0.6),
-    "Mass": (240, 440),
-    "Right Atrial Mass": (0.02, 0.1),
-    "Left Atrial Mass": (0.02, 0.1),
-    "SHI": (0.2, 1.05),
-    "Liver Mass": (8, 25)
+    "Total Mass": (240, 440),
+    "Right Atrial Mass": (0.02, 0.1),   #[g]
+    "Left Atrial Mass": (0.02, 0.1),    #[g]
+    "SHI": (0.2, 1.05)
 }
 
 # Generate data
