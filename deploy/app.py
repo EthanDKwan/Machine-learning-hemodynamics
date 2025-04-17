@@ -207,35 +207,6 @@ def plot_shap(shap_values, features, cluster_idx, feature_names):
     fig, ax = plt.subplots()
     shap.plots.waterfall(explanation, max_display=10)
     st.pyplot(fig)
-
-# Initialize query params
-query_params = st.experimental_get_query_params()
-current_page = query_params.get("page", ["main"])[0]
-
-# Navigation buttons in sidebar
-with st.sidebar:
-    if current_page != "main" and st.button("🏠 Dashboard"):
-        st.experimental_set_query_params(page="main")
-        st.experimental_rerun()
-    
-    if current_page != "About" and st.button("📄 Read Project Summary"):
-        st.experimental_set_query_params(page="About")
-        st.experimental_rerun()
-    
-    if current_page != "Glossary" and st.button("📖 Glossary"):
-        st.experimental_set_query_params(page="Glossary")
-        st.experimental_rerun()
-
-# Page content router
-if current_page == "About":
-    from pages import About
-    About.show()
-elif current_page == "Glossary":
-    from pages import Glossary
-    Glossary.show()
-else:
-    # Main page content
-    st.title("Main Dashboard")
     
 
 # --- Main App Logic ---
