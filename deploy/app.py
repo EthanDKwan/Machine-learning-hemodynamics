@@ -208,19 +208,25 @@ def plot_shap(shap_values, features, cluster_idx, feature_names):
     shap.plots.waterfall(explanation, max_display=10)
     st.pyplot(fig)
 
+# Initialize query params
+query_params = st.experimental_get_query_params()
+# Navigation button
+if st.sidebar.button("📄 Read Project Summary"):
+    st.experimental_set_query_params(page="About")
+    st.experimental_rerun()  # Force immediate update
+
+# Page content router
+if query_params.get("page") == ["About"]:
+    from pages import About
+    About.show()  # Show About page content
+else:
+    # Your main dashboard content
+    st.title("Main Dashboard")
+
+
 # --- Main App Logic ---
-def main():
-    if st.sidebar.button("📄 Read Project Summary"):
-        if hasattr(st, 'switch_page'):
-            st.switch_page("pages/About.py")
-        else:
-            st.error(f"Streamlit {st.__version__} lacks switch_page")
-            # Fallback to query params
-            st.experimental_set_query_params(page="About")
-            st.experimental_rerun()
-            #st.switch_page("pages/About.py")
-    
-    st.title("Hemodynamic Phenotyping Dashboard")
+def main():    
+    st.title("Main Phenotyping Dashboard")
 
     # Get inputs
     inputs = create_inputs()
