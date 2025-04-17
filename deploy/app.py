@@ -211,7 +211,13 @@ def plot_shap(shap_values, features, cluster_idx, feature_names):
 # --- Main App Logic ---
 def main():
     if st.sidebar.button("📄 Read Project Summary"):
-        st.switch_page("pages/About.py")
+        if hasattr(st, 'switch_page'):
+            st.switch_page("pages/About.py")
+        else:
+            st.error(f"Streamlit {st.__version__} lacks switch_page")
+            # Fallback to query params
+            st.experimental_set_query_params(page="About")
+            #st.switch_page("pages/About.py")
     
     st.title("Hemodynamic Phenotyping Dashboard")
 

@@ -10,8 +10,14 @@ import streamlit as st
 
 # Navigation button (appears in sidebar automatically)
 if st.sidebar.button("◀️ Back to Dashboard"):
-    st.switch_page("app.py")
-
+        if hasattr(st, 'switch_page'):
+            st.switch_page("app.py")
+        else:
+            #Fallback to query params
+            st.error(f"Streamlit {st.__version__} lacks switch_page")
+            st.experimental_set_query_params(page="Main")
+            st.experimental_rerun()
+            
 st.markdown("""
 # Machine Learning for Hemodynamic Phenotyping 
 *Identifying sex-associated cardiac remodeling patterns by mining clinical hemodynamic data*
