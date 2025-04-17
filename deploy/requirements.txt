@@ -15,7 +15,7 @@ streamlit-shap==1.0.2
 
 
 # Interpretability
-shap==0.42.1
+shap==0.47.1
 
 # Optional (for Excel I/O)
 openpyxl==3.1.2
