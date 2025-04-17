@@ -17,6 +17,71 @@ from pathlib import Path
 # --- Config ---
 st.set_page_config(layout="wide", page_title="Hemodynamic Phenotyping")
 
+# --- Main App Logic ---
+def main():    
+     
+    st.title("Cardiac Phenotyping Dashboard")
+    st.write("⇐ Define some hemodynamic inputs on the left")
+    
+    # Get inputs from dashboard
+    inputs = create_inputs()
+    input_df = pd.DataFrame([inputs])
+    
+    model_path = Path(__file__).parent / "trainedmodels/cluster means.csv"
+    cluster_means = pd.read_csv(model_path, index_col=0)
+    
+    #On Predict button press
+    if st.sidebar.button("Predict Phenotype"):
+        result = get_prediction(input_df.values)
+        predicted_cluster = result['cluster']
+        pca_center = model.cluster_centers_[predicted_cluster]
+        pca_components = result['pca_components']
+        confidence = result['confidence']
+        cluster_probs = result['cluster_probs']
+        probabilities = cluster_probs[0]
+        shap_values = explainer.shap_values(input_df)
+        cluster_means.index = cluster_means.index.astype(int)
+        original_center = cluster_means.loc[predicted_cluster].values #should be 25D array
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("### Predicted Phenotype")
+            st.success(f"{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['name']}\n"f"({confidence*100:.1f}% confidence)")
+            
+            st.markdown("### Clinical Interpretation")
+            st.info(PHENOTYPE_DESCRIPTIONS[predicted_cluster]["clinical"])
+            
+            st.write("### Potential Management")
+            st.warning(PHENOTYPE_DESCRIPTIONS[predicted_cluster]["management"])
+        with col2:
+            
+            st.subheader("Cluster Probabilities")
+            prob_df = pd.DataFrame({
+                'Phenotype': [PHENOTYPE_DESCRIPTIONS[i]['name'] for i in range(3)],
+                'Probability': probabilities
+            })
+            st.bar_chart(prob_df.set_index('Phenotype'))
+        
+        # Visualizations
+        st.write("### Model Visualizations")
+        plot_radar(pca_components, pca_center, [f"PC{i+1}" for i in range(6)], "PCA Space")
+        plot_radar(inputs, original_center, inputs.keys(), "Original feature space")
+        
+        plot_shap(shap_values = shap_values, features = input_df, cluster_idx = predicted_cluster, feature_names = input_df.columns.tolist())
+        
+        # Download results
+        csv_data = input_df.to_csv(index=False)
+        csv_data += f"\nPrediction Phenotype,{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['name']}"
+        csv_data += f"\nPrediction Confidence,{confidence*100:.1f}%"
+        csv_data += f"\nClinical Description,{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['clinical']}"
+        csv_data += f"\nRecommended Actions,{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['management']}"
+        st.download_button(
+            label="Download Prediction Report (CSV)",
+            data=csv_data,
+            file_name=f"hemodynamic_prediction_report{pd.Timestamp.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv"
+        )
+
 # --- Load Assets ---
 @st.cache_resource
 def load_model():
@@ -109,8 +174,7 @@ def create_inputs():
         EDPo = st.slider("RV Minimum Pressure (mmHg)", 0.0,7.0,1.5)
         Ees = st.slider("Systolic Elastance (mmHg/uL)",0.0,2.0,0.2,0.01)
         Eed = st.slider("Diastolic Elastance (mmHg/uL)",0.0,0.5,0.01,0.01)
-        #VVC = st.slider("Cardio-pulmonary coupling (ratio)",0.0,4.0,1.0,0.1)
-                        
+                       
     with st.sidebar.expander("🫀 Morphology"):
         RVmass = st.slider("RV Mass (g)", 0.1,1.5,0.4,0.05)
         RVthickness = st.slider("RV Thickness (mm)",0.6,2.5,1.1,0.05)
@@ -119,15 +183,12 @@ def create_inputs():
         LAmass = st.slider("Left Atrial Mass (g)", 0.01, 0.1, 0.03,0.01)
         Mass = st.slider("Total Normal Mass (g)", 240,440,200)
         SHI = st.slider("Septal Hypertrophy Index (Ratio)", 0.2, 1.05, 0.5,0.01)
-        #Livermass = st.slider("Liver Mass (g)", 5, 30, 15)
-    
+        
     with st.sidebar.expander("🩺 Misc Metrics"):
          sex_label = st.select_slider("Sex",options=["Male", "Female"],value="Female")
          sex_numeric = 0 if sex_label == "Male" else 1  # Convert to 0/1
          age = st.slider("Age (years)", 0,100,30)
          Treatmentduration = st.slider("Treatment Duration(wks)", 0,12,0)
-        
-    # Return as dictionary matching model's expected features
     return {
         'Treatment Duration': Treatmentduration,
         'HR': HR,
@@ -165,7 +226,6 @@ def plot_radar(input_features, cluster_center, features, title):
     features = list(features)
     input_features = np.array(list(input_features.values())) if isinstance(input_features, dict) else np.array (input_features)
     cluster_center = np.array(cluster_center)
-    #original_space_approx = pca.inverse_transform(model.cl)
     df = pd.DataFrame({
             'Feature': features,
             'Your Values': input_features,
@@ -208,76 +268,5 @@ def plot_shap(shap_values, features, cluster_idx, feature_names):
     shap.plots.waterfall(explanation, max_display=10)
     st.pyplot(fig)
     
-
-# --- Main App Logic ---
-def main():    
-     
-    st.title("Cardiac Phenotyping Dashboard")
-    st.write("⇐ Define some hemodynamic inputs on the left")
-    
-    # Get inputs   
-    inputs = create_inputs()
-    
-    #Original space
-    model_path = Path(__file__).parent / "trainedmodels/cluster means.csv"
-    cluster_means = pd.read_csv(model_path, index_col=0)
-    #cluster_means = pd.read_csv("trainedmodels/cluster means.csv",index_col = 0)
-
-    input_df = pd.DataFrame([inputs])
-    
-    if st.sidebar.button("Predict Phenotype"):
-        # Predict
-        result = get_prediction(input_df.values)
-        #PCA Space
-        predicted_cluster = result['cluster']
-        pca_center = model.cluster_centers_[predicted_cluster]
-        pca_components = result['pca_components']
-        confidence = result['confidence']
-        cluster_probs = result['cluster_probs']
-        probabilities = cluster_probs[0]
-        shap_values = explainer.shap_values(input_df)
-        cluster_means.index = cluster_means.index.astype(int)
-        original_center = cluster_means.loc[predicted_cluster].values #should be 25D array
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown("### Predicted Phenotype")
-            
-            st.success(f"{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['name']}\n"f"({confidence*100:.1f}% confidence)")
-            
-            # Clinical implications
-            st.markdown("### Clinical Interpretation")
-            st.info(PHENOTYPE_DESCRIPTIONS[predicted_cluster]["clinical"])
-            st.write("### Potential Management")
-            st.warning(PHENOTYPE_DESCRIPTIONS[predicted_cluster]["management"])
-        with col2:
-            # Probability distribution
-            st.subheader("Cluster Probabilities")
-            prob_df = pd.DataFrame({
-                'Phenotype': [PHENOTYPE_DESCRIPTIONS[i]['name'] for i in range(3)],
-                'Probability': probabilities
-            })
-            st.bar_chart(prob_df.set_index('Phenotype'))
-        
-        # Visualizations
-        st.write("### Model Visualizations")
-        plot_radar(pca_components, pca_center, [f"PC{i+1}" for i in range(6)], "PCA Space")
-        plot_radar(inputs, original_center, inputs.keys(), "Original feature space")
-        
-        plot_shap(shap_values = shap_values, features = input_df, cluster_idx = predicted_cluster, feature_names = input_df.columns.tolist())
-        
-        # Download results
-        csv_data = input_df.to_csv(index=False)
-        csv_data += f"\nPrediction Phenotype,{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['name']}"
-        csv_data += f"\nPrediction Confidence,{confidence*100:.1f}%"
-        csv_data += f"\nClinical Description,{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['clinical']}"
-        csv_data += f"\nRecommended Actions,{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['management']}"
-        st.download_button(
-            label="Download Prediction Report (CSV)",
-            data=csv_data,
-            file_name=f"hemodynamic_prediction_report{pd.Timestamp.now().strftime('%Y%m%d')}.csv",
-            mime="text/csv"
-        )
-
 if __name__ == "__main__":
     main()
