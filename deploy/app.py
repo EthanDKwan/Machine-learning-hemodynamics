@@ -12,7 +12,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import plotly.express as px
 import shap
-import os
 
 # --- Config ---
 st.set_page_config(layout="wide", page_title="Hemodynamic Phenotyping")
@@ -20,18 +19,14 @@ st.set_page_config(layout="wide", page_title="Hemodynamic Phenotyping")
 # --- Load Assets ---
 @st.cache_resource
 def load_model():
-    file_path = os.path.join("..", "src","trained_k3_model.joblib")
-    model = joblib.load(file_path)
-    file_path = os.path.join("..", "src","pca_model.joblib")
-    pca = joblib.load(file_path)
-    file_path = os.path.join("..", "src","scaler.joblib")
-    scaler = joblib.load(file_path)
+    model = joblib.load("trainedmodels/trained_k3_mode.joblib")
+    pca = joblib.load("trainedmodels/pca_model.joblib")
+    scaler = joblib.load("trainedmodels/scaler.joblib")
     return model, pca, scaler
 
 @st.cache_resource
 def load_explainer():
-    file_path = os.path.join("..","src","SHAP_explainer.joblib")
-    explainer = joblib.load(file_path)
+    explainer = joblib.load("trainedmodels/SHAP_explainer.joblib")
     return explainer
 
 model, pca, scaler = load_model()
@@ -219,8 +214,7 @@ def main():
     inputs = create_inputs()
     
     #Original space
-    file_path = os.path.join("..", "Results", "K Clustering", "cluster means.csv")
-    cluster_means = pd.read_csv(file_path, index_col = 0)
+    cluster_means = pd.read_csv("trainedmodels/cluster means.csv",index_col = 0)
 
     input_df = pd.DataFrame([inputs])
     
