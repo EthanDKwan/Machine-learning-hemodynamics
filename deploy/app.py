@@ -219,16 +219,17 @@ if st.sidebar.button("📄 Read Project Summary"):
 if query_params.get("page") == ["About"]:
     from pages import About
     About.show()  # Show About page content
-else:
+#else:
     # Your main dashboard content
-    st.title("Main Dashboard")
-
+    
 
 # --- Main App Logic ---
 def main():    
-    st.title("Main Phenotyping Dashboard")
-
-    # Get inputs
+     
+    st.title("Cardiac Phenotyping Dashboard")
+    st.write("⇐ Define some hemodynamic inputs on the left")
+    
+    # Get inputs   
     inputs = create_inputs()
     
     #Original space
@@ -254,11 +255,10 @@ def main():
         
         col1, col2 = st.columns(2)
         with col1:
-            st.subheader("Predicted Phenotype")
-            st.metric(
-                label=PHENOTYPE_DESCRIPTIONS[predicted_cluster]["name"],
-                value=f"{confidence*100:.1f}% Confidence"
-            )
+            st.markdown("### Predicted Phenotype")
+            
+            st.success(f"{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['name']}\n"f"({confidence*100:.1f}% confidence)")
+            
             # Clinical implications
             st.markdown("### Clinical Interpretation")
             st.info(PHENOTYPE_DESCRIPTIONS[predicted_cluster]["clinical"])
@@ -279,11 +279,18 @@ def main():
         plot_radar(inputs, original_center, inputs.keys(), "Original feature space")
         
         plot_shap(shap_values = shap_values, features = input_df, cluster_idx = predicted_cluster, feature_names = input_df.columns.tolist())
+        
         # Download results
+        csv_data = input_df.to_csv(index=False)
+        csv_data += f"\nPrediction Phenotype,{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['name']}"
+        csv_data += f"\nPrediction Confidence,{confidence*100:.1f}%"
+        csv_data += f"\nClinical Description,{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['clinical']}"
+        csv_data += f"\nRecommended Actions,{PHENOTYPE_DESCRIPTIONS[predicted_cluster]['management']}"
         st.download_button(
-            label="Download Prediction Report",
-            data=input_df.to_csv(),
-            file_name="hemodynamic_prediction.csv"
+            label="Download Prediction Report (CSV)",
+            data=csv_data,
+            file_name=f"hemodynamic_prediction_report{pd.Timestamp.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv"
         )
 
 if __name__ == "__main__":

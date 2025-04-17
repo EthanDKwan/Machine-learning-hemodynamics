@@ -9,16 +9,15 @@ Created on Wed Apr 16 16:56:54 2025
 import streamlit as st
 
 def show():
-    st.title("Project Summary")     
+    st.title("Summary")     
 
        
     st.markdown("""
-# Machine Learning for Hemodynamic Phenotyping 
 *Identifying sex-associated cardiac remodeling patterns by mining clinical hemodynamic data*
 
 *Used unsupervised learning and SHAP analysis to discover and validate three distinct adaptive remodeling patterns in clinical pulmonary hypertension data, validating prior clinical findings.*  
 
-*(Interactive dashboard deployed for trained model exploration and interactive phenotyping: [Streamlit App Link])* 
+*Interactive dashboard deployed for trained model exploration and interactive phenotyping on streamlit*
 
 ### Problem  
 *"Cardiac hemodynamic remodeling is complex in health and disease; can we identify hidden patterns that improve our understanding of disease adaptation to personalize treatment?"*  
