@@ -89,10 +89,4 @@ This project is licensed under the CC by NC 4 License.
 EthanDKwan@gmail.com
 """)
 
-    # Navigation button (appears in sidebar automatically)
-    if st.sidebar.button("◀️ Back to Dashboard"):
-        st.experimental_set_query_params()
-        st.experimental_rerun()  # Force immediate update
-# For direct execution testing
-if __name__ == "__main__":
-    show()
+show()

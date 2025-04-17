@@ -210,17 +210,32 @@ def plot_shap(shap_values, features, cluster_idx, feature_names):
 
 # Initialize query params
 query_params = st.experimental_get_query_params()
-# Navigation button
-if st.sidebar.button("📄 Read Project Summary"):
-    st.experimental_set_query_params(page="About")
-    st.experimental_rerun()  # Force immediate update
+current_page = query_params.get("page", ["main"])[0]
+
+# Navigation buttons in sidebar
+with st.sidebar:
+    if current_page != "main" and st.button("🏠 Dashboard"):
+        st.experimental_set_query_params(page="main")
+        st.experimental_rerun()
+    
+    if current_page != "About" and st.button("📄 Read Project Summary"):
+        st.experimental_set_query_params(page="About")
+        st.experimental_rerun()
+    
+    if current_page != "Glossary" and st.button("📖 Glossary"):
+        st.experimental_set_query_params(page="Glossary")
+        st.experimental_rerun()
 
 # Page content router
-if query_params.get("page") == ["About"]:
+if current_page == "About":
     from pages import About
-    About.show()  # Show About page content
-#else:
-    # Your main dashboard content
+    About.show()
+elif current_page == "Glossary":
+    from pages import Glossary
+    Glossary.show()
+else:
+    # Main page content
+    st.title("Main Dashboard")
     
 
 # --- Main App Logic ---
