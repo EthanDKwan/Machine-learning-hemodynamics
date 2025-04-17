@@ -3,7 +3,7 @@
 
 *Used unsupervised learning and SHAP analysis to discover and validate three distinct adaptive remodeling patterns in clinical pulmonary hypertension data, validating prior clinical findings.*  
 
-*(Interactive dashboard deployed for trained model exploration and interactive phenotyping: [Streamlit App Link])* 
+*(Interactive dashboard deployed for trained model exploration and interactive phenotyping: [[Streamlit App Link]](https://cardiacphenotyping.streamlit.app/))* 
 
 ### Problem  
 *"Cardiac hemodynamic remodeling is complex in health and disease; can we identify hidden patterns that improve our understanding of disease adaptation to personalize treatment?"*  
