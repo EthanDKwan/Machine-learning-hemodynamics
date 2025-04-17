@@ -19,7 +19,7 @@ st.set_page_config(layout="wide", page_title="Hemodynamic Phenotyping")
 # --- Load Assets ---
 @st.cache_resource
 def load_model():
-    model = joblib.load("trainedmodels/trained_k3_mode.joblib")
+    model = joblib.load("trainedmodels/trained_k3_model.joblib")
     pca = joblib.load("trainedmodels/pca_model.joblib")
     scaler = joblib.load("trainedmodels/scaler.joblib")
     return model, pca, scaler
