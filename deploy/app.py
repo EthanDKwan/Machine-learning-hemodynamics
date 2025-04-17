@@ -217,6 +217,7 @@ def main():
             st.error(f"Streamlit {st.__version__} lacks switch_page")
             # Fallback to query params
             st.experimental_set_query_params(page="About")
+            st.experimental_rerun()
             #st.switch_page("pages/About.py")
     
     st.title("Hemodynamic Phenotyping Dashboard")
