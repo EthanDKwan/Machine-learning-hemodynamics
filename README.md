@@ -1,16 +1,18 @@
-# Machine Learning for Hemodynamic Phenotyping 
+# Building Machine Learning for Hemodynamic Phenotyping 
 *Identifying sex-associated cardiac remodeling patterns by mining clinical hemodynamic data*
 
 *Used unsupervised learning and SHAP analysis to discover and validate three distinct adaptive remodeling patterns in clinical pulmonary hypertension data, validating prior clinical findings.*  
 
+<<<<<<< HEAD
+[Artificial intelligence won't replace your doctor's, but it could make them better](https://newsnetwork.mayoclinic.org/discussion/science-saturday-artificial-intelligence-wont-replace-your-doctors-but-it-could-make-them-better)
+=======
 *(Interactive dashboard deployed for trained model exploration and interactive phenotyping: [[Streamlit App Link]](https://cardiacphenotyping.streamlit.app/))* 
+>>>>>>> 6366718f8cc3982721640a128d4793c01aaf8819
 
-### Problem  
-*"Cardiac hemodynamic remodeling is complex in health and disease; can we identify hidden patterns that improve our understanding of disease adaptation to personalize treatment?"*  
 
-### Methods  
-*Applied unsupervised (hierarchical, k-means clustering) and interpretable ML (Random Forest classifier, SHAP) models to a pulmonary hypertension clinical dataset (184 samples, 25 features), integrating statistical validation (ANOVA, post-hoc testing, SHAP analysis) and domain expertise to phenotype clusters.*
+[▶️ Try the live demo](https://cardiacphenotyping.streamlit.app)
 
+*For more information about the clinical demo dashboard, see [/deploy/](https://github.com/EthanDKwan/Machine-learning-hemodynamics/tree/main/deploy)
 ### Technologies
 - **Frontend**: Streamlit (interactive dashboard)
 - **Deployment**: Streamlit Cloud
@@ -18,6 +20,12 @@
 - **ML**: scikit-learn
 - **Data Handling**: Pandas, numpy, openpyxl
 - **Visualization**: Matplotlib, plotly, seaborn
+
+### Problem  
+*"Cardiac hemodynamic remodeling is complex in health and disease; can we identify hidden patterns that improve our understanding of disease adaptation to personalize treatment?"*  
+
+### Methods  
+*Applied unsupervised (hierarchical, k-means clustering) and interpretable ML (Random Forest classifier, SHAP) models to a pulmonary hypertension clinical dataset (184 samples, 25 features), integrating statistical validation (ANOVA, post-hoc testing, SHAP analysis) and domain expertise to phenotype clusters.*
 
 ### Key Findings
 
