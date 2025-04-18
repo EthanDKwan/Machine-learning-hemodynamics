@@ -12,7 +12,7 @@ def show():
     st.title("Clinical ML Support Dashboard")     
        
     st.markdown("""
-** Bridging machine learning and clinical workflows **
+### * Bridging machine learning and clinical workflows *
 
 ### Why this exists
 *Clinicians are overloaded with data but starved for insights. There is great potential for machine learning to help - but only if their outputs are **clear, actionable, trustworthy, and integrated into existing workflows.**
@@ -23,12 +23,12 @@ def show():
 This demo illustrates how ML models can be adapted for
 - **Time saving**: In a simulated patient cohort, this dashboard reduced the time-to-insight from raw values by over 90% compared to manual data review by an expert.
 
-- **Adoption potential**: Designed with iterative clinician feedback to priotize interpretability and useability.
+- **Adoption potential**: Designed with iterative clinician feedback to prioritize interpretability and useability.
 
 - **Hypothetically reduce cognitive load** by automating routine assessments.
 """)
     st.markdown("""
-# <a href="https://newsnetwork.mayoclinic.org/discussion/science-saturday-artificial-intelligence-wont-replace-your-doctors-but-it-could-make-them-better/" style="color: inherit; text-decoration: none;">Artificial intelligence won't replace your doctors, but it could make them better</a>
+# <a href="https://newsnetwork.mayoclinic.org/discussion/science-saturday-artificial-intelligence-wont-replace-your-doctors-but-it-could-make-them-better/" style="color: inherit; text-decoration: none; font-size:16px;">Artificial intelligence won't replace your doctors, but it could make them better</a>
 """, unsafe_allow_html=True)
 
     st.markdown("""
