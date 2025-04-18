@@ -3,11 +3,11 @@
 
 *Used unsupervised learning and SHAP analysis to discover and validate three distinct adaptive remodeling patterns in clinical pulmonary hypertension data, validating prior clinical findings.*  
 
-<<<<<<< HEAD
+
 [Artificial intelligence won't replace your doctor's, but it could make them better](https://newsnetwork.mayoclinic.org/discussion/science-saturday-artificial-intelligence-wont-replace-your-doctors-but-it-could-make-them-better)
-=======
+
 *(Interactive dashboard deployed for trained model exploration and interactive phenotyping: [[Streamlit App Link]](https://cardiacphenotyping.streamlit.app/))* 
->>>>>>> 6366718f8cc3982721640a128d4793c01aaf8819
+
 
 
 [▶️ Try the live demo](https://cardiacphenotyping.streamlit.app)
