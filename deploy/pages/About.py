@@ -28,7 +28,7 @@ This demo illustrates how ML models can be adapted for
 - **Hypothetically reduce cognitive load** by automating routine assessments.
 """)
     st.markdown("""
-# <a href="https://newsnetwork.mayoclinic.org/discussion/science-saturday-artificial-intelligence-wont-replace-your-doctors-but-it-could-make-them-better/" style="color: inherit; text-decoration: none; font-size:16px;">Artificial intelligence won't replace your doctors, but it could make them better</a>
+# <a href="https://newsnetwork.mayoclinic.org/discussion/science-saturday-artificial-intelligence-wont-replace-your-doctors-but-it-could-make-them-better/" style="color: inherit; text-decoration: none; font-size:18px;"> Article: "Artificial intelligence won't replace your doctors, but it could make them better"</a>
 """, unsafe_allow_html=True)
 
     st.markdown("""
