@@ -1,4 +1,4 @@
-# Building Machine Learning for Hemodynamic Phenotyping 
+# Building Machine Learning Models for Cardiac Hemodynamic Phenotyping 
 *Identifying sex-associated cardiac remodeling patterns by mining clinical hemodynamic data*
 
 *Used unsupervised learning and SHAP analysis to discover and validate three distinct adaptive remodeling patterns in clinical pulmonary hypertension data, validating prior clinical findings.*  
