@@ -9,7 +9,7 @@ Created on Wed Apr 16 16:56:54 2025
 import streamlit as st
 
 def show():
-    st.title("Clinical ML Support Dashboard")     
+    st.title("Clinical Cardiac Phenotyping Dashboard")     
        
     st.markdown("""
 ### * Bridging machine learning and clinical workflows *
@@ -28,7 +28,7 @@ This demo illustrates how ML models can be adapted for
 - **Hypothetically reduce cognitive load** by automating routine assessments.
 """)
     st.markdown("""
-# <a href="https://newsnetwork.mayoclinic.org/discussion/science-saturday-artificial-intelligence-wont-replace-your-doctors-but-it-could-make-them-better/" style="color: inherit; text-decoration: none; font-size:18px;"> Article: "Artificial intelligence won't replace your doctors, but it could make them better"</a>
+# <a href="https://newsnetwork.mayoclinic.org/discussion/science-saturday-artificial-intelligence-wont-replace-your-doctors-but-it-could-make-them-better/" style="color: inherit; text-decoration: none; font-size:20px;"> Article: "Artificial intelligence won't replace your doctors, but it could make them better"</a>
 """, unsafe_allow_html=True)
 
     st.markdown("""

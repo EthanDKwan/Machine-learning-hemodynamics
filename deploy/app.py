@@ -20,7 +20,7 @@ st.set_page_config(layout="wide", page_title="Hemodynamic Phenotyping")
 # --- Main App Logic ---
 def main():    
      
-    st.title("Cardiac Phenotyping Dashboard")
+    st.title("Clinical Cardiac Phenotyping Dashboard")
     st.write("⇐ Define some hemodynamic inputs on the left")
     
     # Get inputs from dashboard
