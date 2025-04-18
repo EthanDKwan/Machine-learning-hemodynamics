@@ -1,7 +1,7 @@
 # Clinical Machine Learning Support Dashboard
 ## **Bridging machine learning and clinical workflows**
 
-[▶️Try the live demo, deployed on Streamlit] (https://cardiacphenotyping.streamlit.app)
+[▶️ Try the live demo, deployed on Streamlit](https://cardiacphenotyping.streamlit.app)
 
 ### Why this exists
 *Clinicians are overloaded with data but starved for insights. There is great potential for machine learning to help - but only if their outputs are **clear, actionable, trustworthy, and integrated into existing workflows.**
