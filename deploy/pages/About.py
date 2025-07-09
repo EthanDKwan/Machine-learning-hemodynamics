@@ -15,9 +15,9 @@ def show():
 ### * Bridging machine learning and clinical workflows *
 
 ### Why this exists
-*Clinicians are overloaded with data but starved for insights. There is great potential for machine learning to help - but only if the outputs are **clear, actionable, trustworthy, and integrated into existing workflows.**
+*Clinicians are overloaded with data but starved for insights. There is great potential for machine learning to help, but only if the outputs are **clear, actionable, trustworthy, and integrated into existing workflows.**
 
-*Clinicians shouldn't need to understand SHAP values - they need actionable insights. This dashboard demonstrates how insights from rigorously trained and interpreted ML models can integrate into clinical workflows, translating raw predictions into simple, actionable insights with trust-building visualizations.'
+*Clinicians shouldn't need to understand SHAP values: they need actionable insights. This dashboard demonstrates how insights from rigorously trained and interpreted ML models can integrate into clinical workflows, translating raw predictions into simple, actionable insights with trust-building visualizations.'
 
 ### Hypothetical Impact
 This demo illustrates how ML models can be adapted for
